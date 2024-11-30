@@ -1,6 +1,8 @@
+local f = {}
+
 -- peripheral identification
 --
-function periphSearch(type)
+function f.periphSearch(type)
   local names = peripheral.getNames()
   local i, name
   for i, name in pairs(names) do
@@ -13,7 +15,7 @@ end
 
 -- formatting
 
-function format_int(number)
+function f.format_int(number)
   if number == nil then number = 0 end
 
   local i, j, minus, int, fraction = tostring(number):find('([-]?)(%d+)([.]?%d*)')
@@ -28,7 +30,7 @@ end
 -- monitor related
 
 --display text text on monitor, "mon" peripheral
-function draw_text(mon, x, y, text, text_color, bg_color)
+function f.draw_text(mon, x, y, text, text_color, bg_color)
   mon.monitor.setBackgroundColor(bg_color)
   mon.monitor.setTextColor(text_color)
   mon.monitor.setCursorPos(x, y)
@@ -40,7 +42,7 @@ function draw_text(mon, x, y, text, text_color, bg_color)
   mon.monitor.write(text)
 end
 
-function draw_text_right(mon, offset, y, text, text_color, bg_color)
+function f.draw_text_right(mon, offset, y, text, text_color, bg_color)
   mon.monitor.setBackgroundColor(bg_color)
   mon.monitor.setTextColor(text_color)
   mon.monitor.setCursorPos(mon.X - string.len(tostring(text)) - offset - 5, y)
@@ -52,13 +54,13 @@ function draw_text_right(mon, offset, y, text, text_color, bg_color)
   mon.monitor.write(text)
 end
 
-function draw_text_lr(mon, x, y, offset, text1, text2, text1_color, text2_color, bg_color)
+function f.draw_text_lr(mon, x, y, offset, text1, text2, text1_color, text2_color, bg_color)
   draw_text_right(mon, offset, y, text2, text2_color, bg_color)
   draw_text(mon, x, y, text1, text1_color, bg_color)
 end
 
 --draw line on computer terminal
-function draw_line(mon, x, y, length, color)
+function f.draw_line(mon, x, y, length, color)
   if length < 0 then
     length = 0
   end
@@ -71,16 +73,18 @@ end
 --draws two overlapping lines
 --background line of bg_color
 --main line of bar_color as a percentage of minVal/maxVal
-function progress_bar(mon, x, y, length, minVal, maxVal, bar_color, bg_color)
+function f.progress_bar(mon, x, y, length, minVal, maxVal, bar_color, bg_color)
   draw_line(mon, x, y, length, bg_color)   --backgoround bar
   local barSize = math.floor((minVal / maxVal) * length)
   draw_line(mon, x, y, barSize, bar_color) --progress so far
 end
 
-function clear(mon)
+function f.clear(mon)
   term.clear()
   term.setCursorPos(1, 1)
   mon.monitor.setBackgroundColor(colors.black)
   mon.monitor.clear()
   mon.monitor.setCursorPos(1, 1)
 end
+
+return f
